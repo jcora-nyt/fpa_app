@@ -48,6 +48,17 @@ fpaApp.controller('FpaSearchCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelega
         {'lookupCode': 'PA', 'description': 'Pennsylvania'}
       ];
 
+      $http({
+        method: 'GET',
+        url: 'http://10.51.236.201:5000/routes'
+      }).then(function successCallback(response) {
+       var allRoutes=JSON.parse(response);
+        console.log(allRoutes);
+      }, function errorCallback(response) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+      });
+
       $scope.routes = [
         {'routeCode': '1234', 'description': '1234'},
         {'routeCode': '5678', 'description': '5678'},
