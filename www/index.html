@@ -25,26 +25,25 @@
     <script src="js/app.js"></script>
   </head>
   <body ng-app="fpa">
-    <ion-pane ng-controller="FpaMapCtrl">
+    <ion-pane ng-controller="FpaCtrl">
       <ion-header-bar class="bar-stable">
         <h1 class="title">New York Times - FPA</h1>
       </ion-header-bar>
-      <!--<ion-content>-->
         <ion-tabs class=" tabs-top tabs-icon-left">
-          <ion-tab title="Search Routes" >
-
-            <!--<ion-content>-->
-            <!--</ion-content>-->
+          <ion-tab title="Search Routes" ng-controller="FpaSearchCtrl">
+            <ion-content>
+            </ion-content>
           </ion-tab>
-          <ion-tab title="Listings">
-            BLAH
+          <ion-tab title="Listings" ng-controller="FpaListingCtrl">
+            <ion-content>
+            </ion-content>
           </ion-tab>
-          <ion-tab title="Map" on-select="selectTab()">
-            <div id="map" data-tap-disabled="true"></div>
+          <ion-tab title="Map" ng-controller="FpaMapCtrl" on-select="showMap()">
+            <ion-content>
+              <div id="map" data-tap-disabled="true"></div>
+            </ion-content>
           </ion-tab>
-
         </ion-tabs>
-      <!--</ion-content>-->
     </ion-pane>
   </body>
 </html>
