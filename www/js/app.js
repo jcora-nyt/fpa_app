@@ -22,6 +22,17 @@ angular.module('fpa', ['ionic'])
     }
   });
 })
+.controller('FpaCtrl', ['$scope', function($scope) {
+
+}])
+.controller('FpaSearchCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate',
+                              function($scope, $ionicLoading, $ionicTabsDelegate) {
+
+}])
+.controller('FpaListingCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate', 
+                               function($scope, $ionicLoading, $ionicTabsDelegate) {
+
+}])
 .controller('FpaMapCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate', '$timeout',
                            function($scope, $ionicLoading, $ionicTabsDelegate, $timeout) {
   $scope.initGoogleMaps = function() {
@@ -36,11 +47,7 @@ angular.module('fpa', ['ionic'])
     }, 1000);
   };
 
-  $scope.init = function() {
-    //google.maps.event.addDomListener(window, 'load', );
-  };
-
-  $scope.selectTab = function(tabIndex) {
+  $scope.showMap = function(tabIndex) {
     console.log("selected tab: " + tabIndex);
     if (!$scope.map) {
       google.maps.event.addDomListener(window, "load", $scope.initGoogleMaps());
@@ -64,6 +71,4 @@ angular.module('fpa', ['ionic'])
       alert('Unable to get location: ' + error.message);
     });
   };
-
-  $scope.init();
 }]);
