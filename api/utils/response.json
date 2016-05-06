@@ -1,0 +1,24 @@
+{
+	"meta": {
+		"num_records": 0
+	},
+	"data": {
+		"name": "",
+		"address": "",
+		"city": "",
+		"state": "",
+		"zip": "",
+		"geo": {
+			"lat": 41.52,
+			"lng": -71.61
+		},
+		// escalation = null, if not escalated
+		"escalation": {
+			"type": "STANDARD",
+			"level": 2,
+			"status": "OPEN",
+			"product": "DS",
+			"complaint": "WP"
+		}
+	}
+}
