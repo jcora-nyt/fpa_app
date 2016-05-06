@@ -15,6 +15,7 @@ api/env
 *.exe
 *.o
 *.so
+*.pyc
 
 # Packages #
 ############
