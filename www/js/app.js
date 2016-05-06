@@ -31,7 +31,34 @@ fpaApp.controller('FpaCtrl', ['$scope', function($scope) {
   $scope.state = null;
   $scope.city = null;
   $scope.routeId = null;
-  $scope.results = [];
+  $scope.results = {
+    "meta": {
+        "route_id": 1, 
+        "num_records": 0
+    }, 
+    "data": {
+        "customers": [
+            {
+                "city": "Pittsburg", 
+                "name": "Moose Kitten", 
+                "zip": "13412", 
+                "state": "PA", 
+                "address": "123 Some Address", 
+                "geo": {
+                    "lat": 41.52, 
+                    "lng": -71.61
+                }, 
+                "escalation": {
+                    "status": "OPEN", 
+                    "product": "DS", 
+                    "type": "STANDARD", 
+                    "complaint": "WP", 
+                    "level": 2
+                }
+            }
+        ]
+    }
+  };
 }]);
 
 /**
@@ -48,7 +75,13 @@ fpaApp.controller('FpaSearchCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelega
  */
 fpaApp.controller('FpaListingCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate',
                                function($scope, $ionicLoading, $ionicTabsDelegate) {
+  $scope.viewCustomer = function(customer) {
+    console.log(customer);
+  };
 
+  $scope.viewCustomerOnMap = function(customer) {
+    $ionicTabsDelegate.select(2);
+  };
 }]);
 
 /**

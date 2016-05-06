@@ -19,7 +19,7 @@
     <script src="cordova.js"></script>
 
     <!-- google maps javascript -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIXIOIQy08vXCBvhKIczEnCDx0QMeT2Xs&sensor=true"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIXIOIQy08vXCBvhKIczEnCDx0QMeT2Xs"></script>
 
     <!-- your app's js -->
     <script src="js/app.js"></script>
@@ -122,7 +122,27 @@
         <ion-tab title="Listings" ng-controller="FpaListingCtrl">
           <ion-view>
             <ion-content>
-              
+              <ion-list>
+                <div class="item item-divider">
+                  Pittsburg Route 1
+                </div>
+                <ion-item ng-repeat="customer in results.data.customers">
+                  <div class="row">
+                    <div class="col col-90" ng-click="$parent.viewCustomer(customer)">
+                      <h2>{{ customer.name }} </h2>
+                      <h4>{{ customer.address }}, {{ customer.city }}
+                    </div>
+                    <div class="col col-10">
+                      <div class="listing-emotion">
+                        <i class="icon ion-android-happy"></i>
+                      </div>    
+                    </div>
+                  </div>  
+                  <ion-option-button class="button-info" ng-click="$parent.viewCustomerOnMap(customer)">
+                    <i class="icon ion-map"></i>
+                  </ion-option-button>  
+                </ion-item>
+              </ion-list>             
             </ion-content>
           </ion-view>
         </ion-tab>

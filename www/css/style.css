@@ -7,3 +7,15 @@
 .scroll {
     height: 100%;
 }
+
+.ion-android-happy {
+	color: green;
+}
+
+.ion-android-sad {
+	color: red;
+}
+
+.listing-emotion .icon {
+	font-size: 2.2em;
+}
