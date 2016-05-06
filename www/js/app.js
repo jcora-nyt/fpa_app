@@ -41,6 +41,18 @@ fpaApp.controller('FpaCtrl', ['$scope', function($scope) {
 fpaApp.controller('FpaSearchCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate',
                               function($scope, $ionicLoading, $ionicTabsDelegate) {
 
+      $scope.lov_state = [
+        {'lookupCode': 'AL', 'description': 'Alabama'},
+        {'lookupCode': 'FL', 'description': 'Florida'},
+        {'lookupCode': 'CA', 'description': 'California'},
+        {'lookupCode': 'PA', 'description': 'Pennsylvania'}
+      ];
+
+      $scope.searchRoutes = function() {
+        console.log($scope);
+        console.log("State is " + $scope.state);
+        }
+
 }]);
 
 /**
