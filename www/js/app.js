@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
+angular.module('fpa', ['ionic'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -22,3 +22,48 @@ angular.module('starter', ['ionic'])
     }
   });
 })
+.controller('FpaMapCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate', '$timeout',
+                           function($scope, $ionicLoading, $ionicTabsDelegate, $timeout) {
+  $scope.initGoogleMaps = function() {
+    var myLatlng = new google.maps.LatLng(43.07493,-89.381388);
+    var mapOptions = {
+      center: myLatlng,
+      zoom: 16,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    $timeout(function() {
+      $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    }, 1000);
+  };
+
+  $scope.init = function() {
+    //google.maps.event.addDomListener(window, 'load', );
+  };
+
+  $scope.selectTab = function(tabIndex) {
+    console.log("selected tab: " + tabIndex);
+    if (!$scope.map) {
+      google.maps.event.addDomListener(window, "load", $scope.initGoogleMaps());
+    }
+  };
+
+  $scope.centerOnMe = function() {
+    if(!$scope.map) {
+      return;
+    }
+
+    $scope.loading = $ionicLoading.show({
+      content: 'Getting current location...',
+      showBackdrop: false
+    });
+
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+      $scope.loading.hide();
+    }, function(error) {
+      alert('Unable to get location: ' + error.message);
+    });
+  };
+
+  $scope.init();
+}]);
