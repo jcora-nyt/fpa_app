@@ -28,9 +28,9 @@ fpaApp.run(function($ionicPlatform) {
  * child controllers.
  */
 fpaApp.controller('FpaCtrl', ['$scope', function($scope) {
-  $scope.state = null;
-  $scope.city = null;
-  $scope.routeId = null;
+  $scope.state = 'PA';
+  $scope.city = 'Pittsburgh';
+  $scope.route = 1;
   $scope.results = {
     "meta": {
         "route_id": 1, 
@@ -65,8 +65,34 @@ fpaApp.controller('FpaCtrl', ['$scope', function($scope) {
  * Search controller that is responsible for collecting user input, fetching the results set,
  * and navigating to a results view (either listing or map).
  */
-fpaApp.controller('FpaSearchCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate',
-                              function($scope, $ionicLoading, $ionicTabsDelegate) {
+fpaApp.controller('FpaSearchCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate', '$http',
+                              function($scope, $ionicLoading, $ionicTabsDelegate, $http) {
+
+      $scope.lov_state = [
+        {'lookupCode': 'AL', 'description': 'Alabama'},
+        {'lookupCode': 'FL', 'description': 'Florida'},
+        {'lookupCode': 'CA', 'description': 'California'},
+        {'lookupCode': 'PA', 'description': 'Pennsylvania'}
+      ];
+
+      $http({
+        method: 'GET',
+        url: 'http://10.51.236.201:5000/routes/'
+      }).then(function successCallback(response) {
+        $scope.routes = response.data.data.routes;
+      }, function errorCallback(response) {
+      });
+
+      $scope.routes = [];
+
+      $scope.searchRoutes = function(state, city, routeId) {
+          $scope.state=state;
+          $scope.city=city;
+          $scope.routeId=routeId;
+        console.log("State is " + state);
+        console.log("City is " + city);
+        console.log("routeId is " + routeId);
+        }
 
 }]);
 
