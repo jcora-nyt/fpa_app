@@ -14,8 +14,8 @@
 				"zip": "",
 				"phone_home": "",
 				"geo": {
-					"lat": 41.52,
-					"lng": -71.61
+					"lat": "41.52",
+					"lng": "-71.61"
 				},
 				"escalation": {
 					"type": "STANDARD",
