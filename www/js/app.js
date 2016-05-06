@@ -3,9 +3,9 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('fpa', ['ionic'])
+var fpaApp = angular.module('fpa', ['ionic']);
 
-.run(function($ionicPlatform) {
+fpaApp.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -21,19 +21,40 @@ angular.module('fpa', ['ionic'])
       StatusBar.styleDefault();
     }
   });
-})
-.controller('FpaCtrl', ['$scope', function($scope) {
+});
 
-}])
-.controller('FpaSearchCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate',
+/**
+ * The base controller for the app. Will contain any shared data or methods that can be used by the
+ * child controllers.
+ */
+fpaApp.controller('FpaCtrl', ['$scope', function($scope) {
+  $scope.state = null;
+  $scope.city = null;
+  $scope.routeId = null;
+  $scope.results = [];
+}]);
+
+/**
+ * Search controller that is responsible for collecting user input, fetching the results set,
+ * and navigating to a results view (either listing or map).
+ */
+fpaApp.controller('FpaSearchCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate',
                               function($scope, $ionicLoading, $ionicTabsDelegate) {
 
-}])
-.controller('FpaListingCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate', 
+}]);
+
+/**
+ * Listing controller will display addresses and FPA status indicators.
+ */
+fpaApp.controller('FpaListingCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate',
                                function($scope, $ionicLoading, $ionicTabsDelegate) {
 
-}])
-.controller('FpaMapCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate', '$timeout',
+}]);
+
+/**
+ * Map controller will display the current result set in a map view.
+ */
+fpaApp.controller('FpaMapCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate', '$timeout',
                            function($scope, $ionicLoading, $ionicTabsDelegate, $timeout) {
   $scope.initGoogleMaps = function() {
     var myLatlng = new google.maps.LatLng(43.07493,-89.381388);
@@ -48,7 +69,6 @@ angular.module('fpa', ['ionic'])
   };
 
   $scope.showMap = function(tabIndex) {
-    console.log("selected tab: " + tabIndex);
     if (!$scope.map) {
       google.maps.event.addDomListener(window, "load", $scope.initGoogleMaps());
     }
