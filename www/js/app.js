@@ -48,9 +48,20 @@ fpaApp.controller('FpaSearchCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelega
         {'lookupCode': 'PA', 'description': 'Pennsylvania'}
       ];
 
-      $scope.searchRoutes = function() {
-        console.log($scope);
-        console.log("State is " + $scope.state);
+      $scope.routes = [
+        {'routeCode': '1234', 'description': '1234'},
+        {'routeCode': '5678', 'description': '5678'},
+        {'routeCode': '7890', 'description': '7890'},
+        {'routeCode': '1368', 'description': '1368'}
+      ];
+
+      $scope.searchRoutes = function(state, city, routeId) {
+          $scope.state=state;
+          $scope.city=city;
+          $scope.routeId=routeId;
+        console.log("State is " + state);
+        console.log("City is " + city);
+        console.log("routeId is " + routeId);
         }
 
 }]);

@@ -59,17 +59,17 @@
                   <div class="input-label">
                     Route
                   </div>
-                  <select>
-                    <option value="1234">1234</option>
-                    <option value="4567" selected>4567</option>
-                    <option value="7890">7890</option>
-                    <option value="1357">1357</option>
+                  <select
+                    ng-options="currentRoute.routeCode as currentRoute.description for currentRoute in routes"
+                    ng-model="routeId"
+                    >
+
                   </select>
                 </label>
               </div>
 
               <div>
-                <button class="button button-block" ng-click="searchRoutes();" type="submit">
+                <button class="button button-block" ng-click="searchRoutes(state, city, routeId);" type="submit">
                   Search Routes
                 </button>
 
