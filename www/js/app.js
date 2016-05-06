@@ -31,33 +31,14 @@ fpaApp.controller('FpaCtrl', ['$scope', function($scope) {
   $scope.state = 'PA';
   $scope.city = 'Pittsburgh';
   $scope.route = 1;
-  $scope.results = {
-    "meta": {
-        "route_id": 1, 
-        "num_records": 0
-    }, 
-    "data": {
-        "customers": [
-            {
-                "city": "Pittsburg", 
-                "name": "Moose Kitten", 
-                "zip": "13412", 
-                "state": "PA", 
-                "address": "123 Some Address", 
-                "geo": {
-                    "lat": 41.52, 
-                    "lng": -71.61
-                }, 
-                "escalation": {
-                    "status": "OPEN", 
-                    "product": "DS", 
-                    "type": "STANDARD", 
-                    "complaint": "WP", 
-                    "level": 2
-                }
-            }
-        ]
-    }
+  $scope.results = null;
+
+  $scope.setRoute = function(route) {
+    $scope.route = route;
+  };
+
+  $scope.setResults = function(results) {
+    $scope.results = results;
   };
 }]);
 
@@ -85,28 +66,42 @@ fpaApp.controller('FpaSearchCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelega
 
       $scope.routes = [];
 
-      $scope.searchRoutes = function(state, city, routeId) {
-          $scope.state=state;
-          $scope.city=city;
-          $scope.routeId=routeId;
-        console.log("State is " + state);
-        console.log("City is " + city);
-        console.log("routeId is " + routeId);
-        }
-
+      $scope.searchRoutes = function(state, city, route) {
+        $scope.setRoute(route);
+        $http.get('http://10.51.236.201:5000/routes/' + $scope.route + '/').then(function(resp) {
+          $scope.setResults(resp.data);
+          $ionicTabsDelegate.select(1);
+        });
+      } 
 }]);
 
 /**
  * Listing controller will display addresses and FPA status indicators.
  */
-fpaApp.controller('FpaListingCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate',
-                               function($scope, $ionicLoading, $ionicTabsDelegate) {
+fpaApp.controller('FpaListingCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate', '$ionicModal',
+                               function($scope, $ionicLoading, $ionicTabsDelegate, $ionicModal) {
   $scope.viewCustomer = function(customer) {
-    console.log(customer);
+    $scope.selectedCustomer = customer;
+    $scope.openModal();
   };
 
   $scope.viewCustomerOnMap = function(customer) {
     $ionicTabsDelegate.select(2);
+  };
+
+  $scope.escalationOnly = function(value, index, array) {
+    return value.escalation != null;
+  };
+
+  $ionicModal.fromTemplateUrl('my-modal.html', {
+    scope: $scope,
+    animation: 'slide-in-up'
+  }).then(function(modal) {
+    $scope.modal = modal;
+  });
+
+  $scope.openModal = function() {
+    $scope.modal.show();
   };
 }]);
 
@@ -116,7 +111,7 @@ fpaApp.controller('FpaListingCtrl', ['$scope', '$ionicLoading', '$ionicTabsDeleg
 fpaApp.controller('FpaMapCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate', '$timeout',
                            function($scope, $ionicLoading, $ionicTabsDelegate, $timeout) {
   $scope.initGoogleMaps = function() {
-    var myLatlng = new google.maps.LatLng(43.07493,-89.381388);
+    var myLatlng = new google.maps.LatLng(40.45640550,-79.93191060);
     var mapOptions = {
       center: myLatlng,
       zoom: 16,
@@ -124,7 +119,7 @@ fpaApp.controller('FpaMapCtrl', ['$scope', '$ionicLoading', '$ionicTabsDelegate'
     };
     $timeout(function() {
       $scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    }, 1000);
+    }, 0);
   };
 
   $scope.showMap = function(tabIndex) {

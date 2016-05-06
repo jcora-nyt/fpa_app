@@ -64,14 +64,10 @@
                   </select>
                 </label>
               </div>
-
-              <!-- <div>? -->
-
-                <button class="button button-full button-positive" 
-                        ng-click="searchRoutes(state, city, routeId);" type="submit">
-                  Search Routes
-                </button>
-              <!-- </div> -->
+              <button class="button button-full button-positive" 
+                      ng-click="searchRoutes(state, city, route);" type="submit">
+                Search Routes
+              </button>
             </ion-content>
           </ion-view>
         </ion-tab>
@@ -80,13 +76,32 @@
             <ion-content>
               <ion-list>
                 <div class="item item-divider">
-                  Pittsburg Route 1
+                  Escalated Customers in Pittsburg Route {{ route }}
+                </div>
+                <ion-item ng-repeat="customer in results.data.customers | filter:escalationOnly">
+                  <div class="row">
+                    <div class="col col-90" ng-click="$parent.viewCustomer(customer)">
+                      <h2>{{ customer.name }} </h2>
+                      <h4>{{ customer.address | uppercase }}, {{ customer.city | uppercase }}
+                    </div>
+                    <div class="col col-10">
+                      <div class="listing-emotion">
+                        <i class="icon ion-android-sad"></i>
+                      </div>    
+                    </div>
+                  </div>  
+                  <ion-option-button class="button-info" ng-click="$parent.viewCustomerOnMap(customer)">
+                    <i class="icon ion-map"></i>
+                  </ion-option-button>  
+                </ion-item>
+                <div class="item item-divider">
+                  All Customers in Pittsburg Route {{ route }}
                 </div>
                 <ion-item ng-repeat="customer in results.data.customers">
                   <div class="row">
                     <div class="col col-90" ng-click="$parent.viewCustomer(customer)">
                       <h2>{{ customer.name }} </h2>
-                      <h4>{{ customer.address }}, {{ customer.city }}
+                      <h4>{{ customer.address | uppercase }}, {{ customer.city | uppercase }}
                     </div>
                     <div class="col col-10">
                       <div class="listing-emotion">
@@ -112,4 +127,19 @@
       </ion-tabs>
     </ion-pane>
   </body>
+  <script id="my-modal.html" type="text/ng-template">
+    <ion-modal-view>
+      <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title">New Contact</h1>
+          <button class="button button-clear button-primary" ng-click="modal.hide()">Cancel</button>
+        </ion-header-bar>
+      <ion-content class="padding">
+        <h2>{{ selectedCustomer.name }}<h2>
+        <h3>{{ selectedCustomer.address }}, {{ selectedCustomer.city }}<h3>
+        <hr/>
+        <h4>Escalation Status: {{ selectedCustomer.escalation.status }}<h4>
+        <h4>Escalation Level: {{ selectedCustomer.escalation.level }}<h4>
+      </ion-content>
+    </ion-modal-view>
+  </script>
 </html>
