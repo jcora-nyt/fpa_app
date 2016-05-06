@@ -58,14 +58,28 @@ def route_detail(route_id):
 	q_cursor = cnx.cursor(buffered=True)
 
 	# Generate and perform query on DB to get routes
-	query = ('SELECT cs.id, name, address_line1, city, state, zip, phone_home, lat, lng FROM cis_subscriber cs INNER JOIN cis_subscriber_route csr ON cs.id = csr.cis_subscriber_id WHERE route_id = ' + str(route_id))
+	query = ('SELECT cs.id, name, address_line1, city, state, zip, phone_home, lat, lng, esc.id, type, level, status, product, complaint \
+		FROM cis_subscriber cs INNER JOIN cis_subscriber_route csr ON cs.id = csr.cis_subscriber_id LEFT JOIN escalations esc ON cs.id = esc.cis_subscriber_id \
+		WHERE route_id = ' + str(route_id))
 
 	q_cursor.execute(query)
 
 	# Loop through the customers and populate each customer
 	customers = []
 
-	for (customer_id, name, address, city, state, zip, phone, lat, lng) in q_cursor:
+	for (customer_id, name, address, city, state, zip, phone, lat, lng, esc_id, esc_type, level, status, product, complaint) in q_cursor:
+		# Populate escalation information first
+		escalation = None
+
+		if esc_id is not None:
+			escalation = {
+				"type": esc_type,
+				"level": level,
+				"status": status,
+				"product": product,
+				"complaint": complaint
+			}
+
 		# Add customer information and add to customers list
 		customer = {
 			"id": customer_id,
@@ -79,7 +93,7 @@ def route_detail(route_id):
 				"lat": str(lat),
 				"lng": str(lng)
 			},
-			"escalation": None
+			"escalation": escalation
 		}
 
 		customers.append(customer)
