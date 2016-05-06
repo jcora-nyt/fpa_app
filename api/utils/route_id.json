@@ -6,6 +6,7 @@
 	"data": {
 		"customers": [
 			{
+				"id": 0,
 				"name": "",
 				"address": "",
 				"city": "",
