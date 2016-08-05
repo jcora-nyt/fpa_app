@@ -13,3 +13,6 @@ libraries:
   version: "2.6"
 - name: markupsafe
   version: "0.15"
+
+beta_settings:
+  cloud_sql_instances: "nyt-delivery-companion:us-central1:nyt-delivery-companion-db2"
