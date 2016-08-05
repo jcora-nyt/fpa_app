@@ -1,7 +1,6 @@
 application: nyt-delivery-companion
 version: alpha-001
-runtime: python-compat
-vm: true
+runtime: python27
 api_version: 1
 threadsafe: yes
 
