@@ -15,7 +15,7 @@ app = FlaskAPI(__name__)
 def routes():
 	# Create DB connection
 	#cnx = mysql.connector.connect(user='root', password='root', host='localhost', database='cis_delivery')
-	cnx = MySQLdb.connect(unix_socket='/cloudsql/nyt-delivery-companion:nyt-delivery-companion-db', user='root')
+	cnx = MySQLdb.connect(unix_socket='/cloudsql/nyt-delivery-companion:us-central1:nyt-delivery-companion-db2', user='root')
 
 	# Create DB cursor
 	q_cursor = cnx.cursor(buffered=True)
