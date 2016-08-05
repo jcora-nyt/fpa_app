@@ -2,7 +2,7 @@
   "project_name": "NYT Delivery Companion",
   "project_description": "Delivery Companion App for NYT Carriers",
   "show_files": [
-    "api/api.py",
+    "api.py",
     "app.yaml",
     "appengine_config.py"
   ],
