@@ -4,7 +4,7 @@ threadsafe: yes
 
 handlers:
 - url: .*
-  script: api.app
+  script: api.py
 
 libraries:
 - name: jinja2
