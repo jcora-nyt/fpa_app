@@ -3,6 +3,10 @@ from flask.ext.api import FlaskAPI, status, exceptions
 from accessControl import crossdomain
 import mysql.connector
 
+# Note: We don't need to call run() since our application is embedded within
+# the App Engine WSGI application server.
+
+
 # Setup Flask API and use custom JSON encoder for decimal issue
 app = FlaskAPI(__name__)
 
@@ -114,6 +118,3 @@ def route_detail(route_id):
 	}
 
 	return response
-
-if __name__ == "__main__":
-    app.run('10.51.236.201', debug=True)
