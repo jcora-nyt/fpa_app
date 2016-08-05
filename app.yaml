@@ -4,10 +4,12 @@ threadsafe: no
 
 handlers:
 - url: .*
-  script: test.py
+  script: api.py
 
 libraries:
 - name: jinja2
   version: "2.6"
 - name: markupsafe
   version: "0.15"
+- name: MySQLdb
+  version: "latest"
