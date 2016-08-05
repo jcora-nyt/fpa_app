@@ -1,4 +1,3 @@
-application: nyt-delivery-companion
 version: alpha-001
 runtime: python27
 api_version: 1
@@ -9,9 +8,9 @@ handlers:
   script: api.app
 
 libraries:
+- name: MySQLdb
+  version: "latest"
 - name: jinja2
   version: "2.6"
 - name: markupsafe
   version: "0.15"
-- name: MySQLdb
-  version: "latest"
