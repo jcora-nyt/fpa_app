@@ -5,119 +5,123 @@ from flask import request, url_for
 from flask.ext.api import FlaskAPI, status, exceptions
 from accessControl import crossdomain
 import MySQLdb
-#import mysql.connector
+import os
 
-# Setup Flask API and use custom JSON encoder for decimal issue
-app = FlaskAPI(__name__)
+env = os.getenv('SERVER_SOFTWARE')
 
-@app.route("/routes/", methods=['GET', 'OPTIONS'])
-@crossdomain(origin='*')
-def routes():
-	# Create DB connection
-	#cnx = mysql.connector.connect(user='root', password='root', host='localhost', database='cis_delivery')
-	cnx = MySQLdb.connect(unix_socket='/cloudsql/nyt-delivery-companion:us-central1:nyt-delivery-companion-db2', user='root')
+# Only allow connections from App Engine
+if (env and env.startswith('Google App Engine/')):
+	# Setup Flask API and use custom JSON encoder for decimal issue
+	app = FlaskAPI(__name__)
 
-	# Create DB cursor
-	q_cursor = cnx.cursor(buffered=True)
+	@app.route("/routes/", methods=['GET', 'OPTIONS'])
+	@crossdomain(origin='*')
+	def routes():
+		# Create DB connection
+		#cnx = mysql.connector.connect(user='root', password='root', host='localhost', database='cis_delivery')
+		cnx = MySQLdb.connect(unix_socket='/cloudsql/nyt-delivery-companion:us-central1:nyt-delivery-companion-db2', user='root')
 
-	# Generate and perform query on DB to get routes
-	query = ('SELECT id, name FROM route')
+		# Create DB cursor
+		q_cursor = cnx.cursor(buffered=True)
 
-	q_cursor.execute(query)
+		# Generate and perform query on DB to get routes
+		query = ('SELECT id, name FROM route')
 
-	# Loop through the routes and populate each route
-	routes = []
+		q_cursor.execute(query)
 
-	for (route_id, name) in q_cursor:
-		# Add route information and add to routes list
-		route = {
-			"id": route_id,
-			"name": name
-		}
+		# Loop through the routes and populate each route
+		routes = []
 
-		routes.append(route)
-
-	# Cleanup DB stuff
-	q_cursor.close()
-	cnx.close()
-
-	# Process response and return
-	response = {
-		"meta": {
-			"num_records": len(routes)
-		},
-		"data": {
-			"routes": routes
-		}
-	}
-
-	return response
-
-@app.route("/routes/<int:route_id>/", methods=['GET', 'OPTIONS'])
-@crossdomain(origin='*')
-def route_detail(route_id):
-	# Create DB connection
-	cnx = mysql.connector.connect(user='root', password='root', host='localhost', database='cis_delivery')
-
-	# Create DB cursor
-	q_cursor = cnx.cursor(buffered=True)
-
-	# Generate and perform query on DB to get routes
-	query = ('SELECT cs.id, name, address_line1, city, state, zip, phone_home, lat, lng, esc.id, type, level, status, product, complaint \
-		FROM cis_subscriber cs INNER JOIN cis_subscriber_route csr ON cs.id = csr.cis_subscriber_id LEFT JOIN escalations esc ON cs.id = esc.cis_subscriber_id \
-		WHERE route_id = ' + str(route_id))
-
-	q_cursor.execute(query)
-
-	# Loop through the customers and populate each customer
-	customers = []
-
-	for (customer_id, name, address, city, state, zip, phone, lat, lng, esc_id, esc_type, level, status, product, complaint) in q_cursor:
-		# Populate escalation information first
-		escalation = None
-
-		if esc_id is not None:
-			escalation = {
-				"type": esc_type,
-				"level": level,
-				"status": status,
-				"product": product,
-				"complaint": complaint
+		for (route_id, name) in q_cursor:
+			# Add route information and add to routes list
+			route = {
+				"id": route_id,
+				"name": name
 			}
 
-		# Add customer information and add to customers list
-		customer = {
-			"id": customer_id,
-			"name": name,
-			"address": address,
-			"city": city,
-			"state": state,
-			"zip": zip,
-			"phone_home": phone,
-			"geo": {
-				"lat": str(lat),
-				"lng": str(lng)
+			routes.append(route)
+
+		# Cleanup DB stuff
+		q_cursor.close()
+		cnx.close()
+
+		# Process response and return
+		response = {
+			"meta": {
+				"num_records": len(routes)
 			},
-			"escalation": escalation
+			"data": {
+				"routes": routes
+			}
 		}
 
-		customers.append(customer)
+		return response
 
-	# Cleanup DB stuff
-	q_cursor.close()
-	cnx.close()
+	@app.route("/routes/<int:route_id>/", methods=['GET', 'OPTIONS'])
+	@crossdomain(origin='*')
+	def route_detail(route_id):
+		# Create DB connection
+		cnx = mysql.connector.connect(user='root', password='root', host='localhost', database='cis_delivery')
 
-	# Process response and return
-	response = {
-		"meta": {
-			"num_records": len(customers),
-			"route_id": route_id
-		},
-		"data": {
-			"customers": customers
+		# Create DB cursor
+		q_cursor = cnx.cursor(buffered=True)
+
+		# Generate and perform query on DB to get routes
+		query = ('SELECT cs.id, name, address_line1, city, state, zip, phone_home, lat, lng, esc.id, type, level, status, product, complaint \
+			FROM cis_subscriber cs INNER JOIN cis_subscriber_route csr ON cs.id = csr.cis_subscriber_id LEFT JOIN escalations esc ON cs.id = esc.cis_subscriber_id \
+			WHERE route_id = ' + str(route_id))
+
+		q_cursor.execute(query)
+
+		# Loop through the customers and populate each customer
+		customers = []
+
+		for (customer_id, name, address, city, state, zip, phone, lat, lng, esc_id, esc_type, level, status, product, complaint) in q_cursor:
+			# Populate escalation information first
+			escalation = None
+
+			if esc_id is not None:
+				escalation = {
+					"type": esc_type,
+					"level": level,
+					"status": status,
+					"product": product,
+					"complaint": complaint
+				}
+
+			# Add customer information and add to customers list
+			customer = {
+				"id": customer_id,
+				"name": name,
+				"address": address,
+				"city": city,
+				"state": state,
+				"zip": zip,
+				"phone_home": phone,
+				"geo": {
+					"lat": str(lat),
+					"lng": str(lng)
+				},
+				"escalation": escalation
+			}
+
+			customers.append(customer)
+
+		# Cleanup DB stuff
+		q_cursor.close()
+		cnx.close()
+
+		# Process response and return
+		response = {
+			"meta": {
+				"num_records": len(customers),
+				"route_id": route_id
+			},
+			"data": {
+				"customers": customers
+			}
 		}
-	}
 
-	return response
+		return response
 
 # [END all]
