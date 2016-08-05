@@ -1,7 +1,7 @@
 from flask import request, url_for
 from flask.ext.api import FlaskAPI, status, exceptions
 from accessControl import crossdomain
-import mysql.connector
+#import mysql.connector
 
 # Note: We don't need to call run() since our application is embedded within
 # the App Engine WSGI application server.
@@ -14,15 +14,15 @@ app = FlaskAPI(__name__)
 @crossdomain(origin='*')
 def routes():
 	# Create DB connection
-	cnx = mysql.connector.connect(user='root', password='root', host='localhost', database='cis_delivery')
+	#cnx = mysql.connector.connect(user='root', password='root', host='localhost', database='cis_delivery')
 
 	# Create DB cursor
-	q_cursor = cnx.cursor(buffered=True)
+	#q_cursor = cnx.cursor(buffered=True)
 
 	# Generate and perform query on DB to get routes
-	query = ('SELECT id, name FROM route')
+	#query = ('SELECT id, name FROM route')
 
-	q_cursor.execute(query)
+	#q_cursor.execute(query)
 
 	# Loop through the routes and populate each route
 	routes = []
@@ -37,8 +37,8 @@ def routes():
 		routes.append(route)
 
 	# Cleanup DB stuff
-	q_cursor.close()
-	cnx.close()
+	#q_cursor.close()
+	#cnx.close()
 
 	# Process response and return
 	response = {
@@ -56,17 +56,17 @@ def routes():
 @crossdomain(origin='*')
 def route_detail(route_id):
 	# Create DB connection
-	cnx = mysql.connector.connect(user='root', password='root', host='localhost', database='cis_delivery')
+	#cnx = mysql.connector.connect(user='root', password='root', host='localhost', database='cis_delivery')
 
 	# Create DB cursor
-	q_cursor = cnx.cursor(buffered=True)
+	#q_cursor = cnx.cursor(buffered=True)
 
 	# Generate and perform query on DB to get routes
-	query = ('SELECT cs.id, name, address_line1, city, state, zip, phone_home, lat, lng, esc.id, type, level, status, product, complaint \
-		FROM cis_subscriber cs INNER JOIN cis_subscriber_route csr ON cs.id = csr.cis_subscriber_id LEFT JOIN escalations esc ON cs.id = esc.cis_subscriber_id \
-		WHERE route_id = ' + str(route_id))
+	#query = ('SELECT cs.id, name, address_line1, city, state, zip, phone_home, lat, lng, esc.id, type, level, status, product, complaint \
+	#	FROM cis_subscriber cs INNER JOIN cis_subscriber_route csr ON cs.id = csr.cis_subscriber_id LEFT JOIN escalations esc ON cs.id = esc.cis_subscriber_id \
+	#	WHERE route_id = ' + str(route_id))
 
-	q_cursor.execute(query)
+	#q_cursor.execute(query)
 
 	# Loop through the customers and populate each customer
 	customers = []
@@ -103,8 +103,8 @@ def route_detail(route_id):
 		customers.append(customer)
 
 	# Cleanup DB stuff
-	q_cursor.close()
-	cnx.close()
+	#q_cursor.close()
+	#cnx.close()
 
 	# Process response and return
 	response = {
