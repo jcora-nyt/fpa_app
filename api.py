@@ -9,7 +9,6 @@ from accessControl import crossdomain
 
 # Setup Flask API and use custom JSON encoder for decimal issue
 app = FlaskAPI(__name__)
-app.config['DEBUG'] = True
 
 @app.route("/routes/", methods=['GET', 'OPTIONS'])
 @crossdomain(origin='*')
@@ -119,3 +118,6 @@ def route_detail(route_id):
 	}
 
 	return response
+
+if __name__ == "__main__":
+    app.run(debug=True)
