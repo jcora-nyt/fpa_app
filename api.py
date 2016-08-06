@@ -6,6 +6,7 @@ from flask.ext.api import FlaskAPI, status, exceptions
 from accessControl import crossdomain
 import MySQLdb
 import os
+import logging
 
 env = os.getenv('SERVER_SOFTWARE')
 
@@ -19,7 +20,9 @@ if (env and env.startswith('Google App Engine/')):
 	def routes():
 		# Create DB connection
 		#cnx = mysql.connector.connect(user='root', password='root', host='localhost', database='cis_delivery')
-		cnx = MySQLdb.connect(unix_socket='/cloudsql/nyt-del-companion-api:us-central1:nyt-del-companion-db', user='root', db='cis_delivery')
+		cnx = MySQLdb.connect(unix_socket='/cloudsql/nyt-del-companion-api:us-central1:nyt-del-companion-db', user='root')
+		logging.error('HERE WE ARE')
+		logging.error(cnx)
 
 		# Create DB cursor
 		q_cursor = cnx.cursor(buffered=True)
