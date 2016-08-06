@@ -19,7 +19,7 @@ if (env and env.startswith('Google App Engine/')):
 	def routes():
 		# Create DB connection
 		#cnx = mysql.connector.connect(user='root', password='root', host='localhost', database='cis_delivery')
-		cnx = MySQLdb.connect(unix_socket='/cloudsql/nyt-del-companion-api:us-central1:nyt-del-companion-db', user='root')
+		cnx = MySQLdb.connect(unix_socket='/cloudsql/nyt-del-companion-api:us-central1:nyt-del-companion-db', user='root', database='cis_delivery')
 
 		# Create DB cursor
 		q_cursor = cnx.cursor(buffered=True)
